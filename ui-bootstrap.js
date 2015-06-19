@@ -2,7 +2,7 @@
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
 
- * Version: 0.13.0 - 2015-05-02
+ * Version: 0.13.0 - 2015-06-19
  * License: MIT
  */
 angular.module("ui.bootstrap", ["ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.bindHtml","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.position","ui.bootstrap.datepicker","ui.bootstrap.dropdown","ui.bootstrap.modal","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.transition","ui.bootstrap.typeahead"]);
@@ -1795,7 +1795,8 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
       getIsOpen,
       setIsOpen = angular.noop,
       toggleInvoker = $attrs.onToggle ? $parse($attrs.onToggle) : angular.noop,
-      appendToBody = false;
+      appendToBody = false,
+      noFocus = false;
 
   this.init = function( element ) {
     self.$element = element;
@@ -1841,7 +1842,7 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
   };
 
   scope.focusToggleElement = function() {
-    if ( self.toggleElement ) {
+    if ( self.toggleElement && !self.ignoreFocus) {
       self.toggleElement[0].focus();
     }
   };
@@ -1911,6 +1912,7 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
       }
 
       dropdownCtrl.toggleElement = element;
+      dropdownCtrl.ignoreFocus = angular.isDefined(attrs.tabindex) && parseInt(attrs.tabindex, 10) === -1;
 
       var toggleDropdown = function(event) {
         event.preventDefault();
